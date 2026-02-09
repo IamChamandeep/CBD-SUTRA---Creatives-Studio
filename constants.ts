@@ -1,53 +1,57 @@
-import { AssetConfig, VideoAsset, ImageAsset } from './types';
+import { VideoAsset, ImageAsset } from './types';
+
+// ==================================================================================
+// 🎥 VIDEO CONFIGURATION
+// ==================================================================================
+// EASY WAY TO ADD VIDEOS:
+// 1. Apne videos 'public/videos/content' folder mein daalein.
+// 2. Niche list mein bas filename change karein (e.g., '/videos/content/mera-video.mp4').
+// 3. Aap Google Drive / Cloudinary direct links bhi use kar sakte hain.
+// ==================================================================================
+
+export const CREATIVE_VIDEOS: VideoAsset[] = [
+  {
+    id: 'creative-1',
+    type: 'creative',
+    src: '/videos/content/1.mp4', // <--- Yahan apni video file ka naam likhein
+  },
+  {
+    id: 'creative-2',
+    type: 'creative',
+    src: '/videos/content/2.mp4', 
+  },
+  {
+    id: 'creative-3',
+    type: 'creative',
+    src: '/videos/content/3.mp4',
+  },
+  // Aur videos add karne ke liye upar wala block copy-paste karein
+];
+
+export const UGC_VIDEOS: VideoAsset[] = [
+  {
+    id: 'ugc-1',
+    type: 'ugc',
+    src: '/videos/ugc/1.mp4',
+  },
+  {
+    id: 'ugc-2',
+    type: 'ugc',
+    src: '/videos/ugc/2.mp4',
+  },
+  // Add more as needed
+];
 
 // ==========================================
-// 🔧 CONFIGURATION: UPDATE COUNTS HERE
-// ==========================================
-// This is your "CMS". When you add videos to the folders, 
-// just update these numbers to match the total file count.
-export const CONFIG: AssetConfig = {
-  creativeCount: 6, // Total files in /public/videos/content/
-  ugcCount: 5,      // Total files in /public/videos/ugc/
-  staticCount: 4    // Total files in /public/videos/static/
-};
-
-// ==========================================
-// 📁 PATH GENERATORS
+// 🖼️ IMAGE CONFIGURATION
 // ==========================================
 
-const generateVideoList = (type: 'creative' | 'ugc', count: number): VideoAsset[] => {
-  return Array.from({ length: count }, (_, i) => {
-    const num = i + 1;
-    
-    // UPDATED: Using 'content' folder for creatives as per your setup
-    const folder = type === 'creative' ? 'content' : 'ugc';
-    
-    // Path to your local video file
-    // Example: /videos/content/1.mp4
-    const src = `/videos/${folder}/${num}.mp4`;
-
-    return {
-      id: `${type}-${num}`,
-      src: src,
-      type: type,
-      poster: undefined 
-    };
-  });
-};
-
-const generateImageList = (count: number): ImageAsset[] => {
-  return Array.from({ length: count }, (_, i) => {
-    const num = i + 1;
-    return {
-      id: `static-${num}`,
-      src: `/videos/static/${num}.jpg` 
-    };
-  });
-};
-
-export const CREATIVE_VIDEOS = generateVideoList('creative', CONFIG.creativeCount);
-export const UGC_VIDEOS = generateVideoList('ugc', CONFIG.ugcCount);
-export const STATIC_IMAGES = generateImageList(CONFIG.staticCount);
+export const STATIC_IMAGES: ImageAsset[] = [
+  { id: 'static-1', src: '/videos/static/1.jpg' },
+  { id: 'static-2', src: '/videos/static/2.jpg' },
+  { id: 'static-3', src: '/videos/static/3.jpg' },
+  { id: 'static-4', src: '/videos/static/4.jpg' },
+];
 
 export const SITE_META = {
   title: "CBD SUTRA",

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Volume2, VolumeX, AlertTriangle } from 'lucide-react';
+import { Volume2, VolumeX, AlertTriangle, Play, Pause } from 'lucide-react';
 import { VideoAsset } from '../types';
 import { motion, useInView } from 'framer-motion';
 
@@ -22,28 +22,43 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
     amount: 0.4 
   });
 
+  // Handle Autoplay based on scroll position
   useEffect(() => {
-    if (isInView && !hasError) {
-      const playPromise = videoRef.current?.play();
+    if (isInView && !hasError && videoRef.current) {
+      const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => setIsPlaying(true))
-          .catch(error => {
-            // console.log("Autoplay prevented:", error);
+          .catch(() => {
+            // Autoplay blocked or failed, waiting for user interaction
             setIsPlaying(false);
           });
       }
-    } else {
-      videoRef.current?.pause();
+    } else if (!isInView && videoRef.current) {
+      videoRef.current.pause();
       setIsPlaying(false);
     }
   }, [isInView, hasError]);
 
+  // Toggle Mute (Independent of Play/Pause)
   const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent triggering the card click
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
       setIsMuted(videoRef.current.muted);
+    }
+  };
+
+  // Manual Play/Pause Toggle on Card Click
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -54,10 +69,10 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      // Updated classes: fixed widths for responsive breakpoints to ensure centering works nicely
-      className="relative group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)] w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-1.5rem)] lg:w-[calc(25%-1.5rem)] max-w-sm"
+      className="relative group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)] w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-1.5rem)] lg:w-[calc(25%-1.5rem)] max-w-sm cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={togglePlay}
     >
       <div className="aspect-[9/16] relative w-full bg-gray-900 flex items-center justify-center">
         {!hasError ? (
@@ -68,9 +83,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loop
             playsInline
-            muted={true}
+            muted={true} // Default muted for autoplay policy
             onError={() => {
-              // Fixed: Don't log 'e' to avoid circular JSON errors
               console.warn(`Video failed to load: ${video.src}`);
               setHasError(true);
             }}
@@ -91,6 +105,16 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
 
         {!hasError && (
           <>
+            {/* Play/Pause Status Indicator (Center) - Only shows briefly on toggle or hover if paused */}
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
+                 <div className="p-4 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10">
+                    <Play size={24} fill="currentColor" />
+                 </div>
+              </div>
+            )}
+
+            {/* Mute Button (Bottom Right) */}
             <button
               onClick={toggleMute}
               className={`absolute bottom-4 right-4 p-2 rounded-full backdrop-blur-md transition-all duration-300 transform ${
@@ -104,6 +128,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
               {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </button>
 
+            {/* Live Indicator (Top Left) */}
             <div className={`absolute top-4 left-4 flex items-center gap-2 transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0'}`}>
                <div className="w-1.5 h-1.5 rounded-full bg-neon animate-pulse" />
             </div>
