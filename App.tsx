@@ -9,11 +9,11 @@ import { CREATIVE_VIDEOS, UGC_VIDEOS, STATIC_IMAGES } from './constants';
 const App: React.FC = () => {
   return (
     <main className="min-h-screen bg-dark-bg text-white selection:bg-neon selection:text-black">
-      {/* Navbar Placeholder (Keeping it minimal as per request) */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 mix-blend-difference">
+      {/* Navbar - Simplified: Transparent, no background, just fixed text */}
+      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4 transition-all duration-300">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="font-display font-bold text-2xl tracking-tighter uppercase text-white">
-            CBD<span className="text-neon">.</span>Sutra
+          <div className="font-display font-bold text-2xl tracking-tighter uppercase text-white hover:text-gray-200 transition-colors cursor-pointer">
+            CBD SUTRA
           </div>
           {/* <div className="hidden md:block font-mono text-xs text-neon tracking-widest">
             EST. 2024
@@ -65,10 +65,12 @@ const App: React.FC = () => {
             We specialize in performance creative that navigates the complexities of CBD & Wellness marketing.
           </p>
           <a 
-            href="mailto:hello@cbdsutra.com" 
+            href="https://calendly.com/cbdsutra/dicovery-call"
+            target="_blank" 
+            rel="noopener noreferrer"
             className="inline-block border border-white/20 hover:border-neon text-white hover:text-neon px-8 py-4 rounded-full transition-all duration-300 font-mono tracking-widest text-sm uppercase"
           >
-            hello@cbdsutra.com
+            Book a Call
           </a>
           <div className="mt-20 text-xs text-gray-700 font-mono">
             © {new Date().getFullYear()} CBD SUTRA. ALL RIGHTS RESERVED.

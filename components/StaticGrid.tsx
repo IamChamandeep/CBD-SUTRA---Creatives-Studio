@@ -17,16 +17,13 @@ const StaticGrid: React.FC<StaticGridProps> = ({ images }) => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative group overflow-hidden rounded-lg ${
-                // Make the first image span 2 cols on desktop for variety
-                index === 0 ? 'md:col-span-2 md:row-span-2' : ''
-              }`}
+              className="relative group overflow-hidden rounded-lg aspect-[9/16] bg-gray-900"
             >
               <div className="absolute inset-0 bg-neon/0 group-hover:bg-neon/10 transition-colors duration-300 z-10 pointer-events-none" />
               <img 
                 src={img.src} 
                 alt="Brand Moodboard" 
-                className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                className="w-full h-full object-cover transition-all duration-700 transform group-hover:scale-105"
                 loading="lazy"
               />
               <div className="absolute bottom-0 left-0 w-full p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">

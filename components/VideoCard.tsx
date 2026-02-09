@@ -69,7 +69,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)] w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-1.5rem)] lg:w-[calc(25%-1.5rem)] max-w-sm cursor-pointer"
+      className="relative group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)] w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={togglePlay}

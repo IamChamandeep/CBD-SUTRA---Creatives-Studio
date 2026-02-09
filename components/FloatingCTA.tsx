@@ -5,7 +5,9 @@ import { motion } from 'framer-motion';
 const FloatingCTA: React.FC = () => {
   return (
     <motion.a
-      href="#contact"
+      href="https://calendly.com/cbdsutra/dicovery-call"
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2, duration: 0.5 }}
