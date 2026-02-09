@@ -18,8 +18,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
   
   // Only play when in view
   const isInView = useInView(containerRef, {
-    margin: "0px 0px -100px 0px", // Preload slightly before, but play when mostly visible
-    amount: 0.4 // 40% of item visible to play
+    margin: "0px 0px -100px 0px", 
+    amount: 0.4 
   });
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
         playPromise
           .then(() => setIsPlaying(true))
           .catch(error => {
-            console.log("Autoplay prevented or interrupted:", error);
+            // console.log("Autoplay prevented:", error);
             setIsPlaying(false);
           });
       }
@@ -54,7 +54,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative mb-6 break-inside-avoid group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)]"
+      // Updated classes: fixed widths for responsive breakpoints to ensure centering works nicely
+      className="relative group rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-neon/50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,106,0.15)] w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-1.5rem)] lg:w-[calc(25%-1.5rem)] max-w-sm"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -68,25 +69,26 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, index }) => {
             loop
             playsInline
             muted={true}
-            onError={() => setHasError(true)}
+            onError={() => {
+              // Fixed: Don't log 'e' to avoid circular JSON errors
+              console.warn(`Video failed to load: ${video.src}`);
+              setHasError(true);
+            }}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center text-gray-500 p-4 text-center">
+          <div className="flex flex-col items-center justify-center text-gray-500 p-4 text-center h-full w-full bg-gray-900/50">
             <AlertTriangle className="mb-2 text-neon" />
             <span className="text-xs font-mono uppercase">Video Not Found</span>
-            <span className="text-[10px] mt-1 opacity-50">{video.src}</span>
+            <span className="text-[10px] mt-1 opacity-50 break-all px-4">{video.src}</span>
           </div>
         )}
         
-        {/* Grain overlay */}
         {video.type === 'ugc' && !hasError && (
           <div className="absolute inset-0 bg-noise opacity-10 pointer-events-none mix-blend-overlay" />
         )}
 
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Controls - Only show if video loaded successfully */}
         {!hasError && (
           <>
             <button

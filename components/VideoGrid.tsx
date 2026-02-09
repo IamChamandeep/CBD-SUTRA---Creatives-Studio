@@ -10,11 +10,11 @@ const VideoGrid: React.FC<VideoGridProps> = ({ videos }) => {
   return (
     <div className="px-4 max-w-7xl mx-auto pb-20">
       {/* 
-        Masonry Layout using CSS Columns.
-        This allows true masonry (elements stack vertically first) which handles varying aspect ratios better than CSS Grid for this purpose,
-        though here we are forcing 9:16 so heights are consistent.
+        Switched to Flexbox with justify-center.
+        This ensures that if you only have 1 or 2 videos, they stay in the middle 
+        instead of sticking to the left.
       */}
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+      <div className="flex flex-wrap justify-center gap-6">
         {videos.map((video, index) => (
           <VideoCard key={video.id} video={video} index={index} />
         ))}

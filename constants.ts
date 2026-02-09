@@ -6,7 +6,7 @@ import { AssetConfig, VideoAsset, ImageAsset } from './types';
 // This is your "CMS". When you add videos to the folders, 
 // just update these numbers to match the total file count.
 export const CONFIG: AssetConfig = {
-  creativeCount: 6, // Total files in /public/videos/creatives/
+  creativeCount: 6, // Total files in /public/videos/content/
   ugcCount: 5,      // Total files in /public/videos/ugc/
   staticCount: 4    // Total files in /public/videos/static/
 };
@@ -18,19 +18,18 @@ export const CONFIG: AssetConfig = {
 const generateVideoList = (type: 'creative' | 'ugc', count: number): VideoAsset[] => {
   return Array.from({ length: count }, (_, i) => {
     const num = i + 1;
-    // The folder name logic
-    const folder = type === 'creative' ? 'creatives' : 'ugc';
+    
+    // UPDATED: Using 'content' folder for creatives as per your setup
+    const folder = type === 'creative' ? 'content' : 'ugc';
     
     // Path to your local video file
-    // Example: /videos/creatives/1.mp4
+    // Example: /videos/content/1.mp4
     const src = `/videos/${folder}/${num}.mp4`;
 
     return {
       id: `${type}-${num}`,
       src: src,
       type: type,
-      // We assume you might have a poster.jpg, otherwise the video first frame is used.
-      // If you don't have posters, you can remove the poster line or leave it null.
       poster: undefined 
     };
   });
@@ -39,8 +38,6 @@ const generateVideoList = (type: 'creative' | 'ugc', count: number): VideoAsset[
 const generateImageList = (count: number): ImageAsset[] => {
   return Array.from({ length: count }, (_, i) => {
     const num = i + 1;
-    // Path to your local image file
-    // Example: /videos/static/1.jpg
     return {
       id: `static-${num}`,
       src: `/videos/static/${num}.jpg` 
